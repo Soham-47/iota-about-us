@@ -21,11 +21,12 @@ html {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background: #1a1a2e; /* Solid color matching the navbar */
   color: var(--text-color);
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+  min-height: 100vh;
 }
 
 body::before {
@@ -35,9 +36,9 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://images.unsplash.com/photo-1532298229144-0ec0c57515c7') no-repeat center center/cover;
-  opacity: 0.2;
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.98) 0%, rgba(22, 22, 46, 0.98) 100%);
   z-index: -1;
+  backdrop-filter: blur(5px);
 }
 
 a {
@@ -602,12 +603,227 @@ footer .foot {
   width: 100%;
   max-width: 1000px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 400px;
+  transition: all 0.3s ease;
+  height: 250px;
   margin: 0 auto;
   grid-column: 2;
   grid-row: 1 / span 2;
   align-self: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.map-container.expanded {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  z-index: 2000;
+  border-radius: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.map-preview {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.map-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8);
+  transition: transform 0.3s ease;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.map-overlay svg {
+  width: 24px;
+  height: 24px;
+}
+
+.map-container:hover .map-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.map-full {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.map-container.expanded .map-preview {
+  display: none;
+}
+
+.map-container.expanded .map-full {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.close-map {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.close-map:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+.map-container.expanded {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  z-index: 2000;
+  border-radius: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.map-preview {
+  display: none; /* Hide preview by default */
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.map-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8);
+  transition: transform 0.3s ease;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.map-overlay svg {
+  width: 24px;
+  height: 24px;
+}
+
+.map-container:hover .map-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.map-full {
+  display: block; /* Show map by default */
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.map-container.expanded .map-preview {
+  display: none;
+}
+
+.map-container.expanded .map-full {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 2rem;
+}
+
+.close-map {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.close-map:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
 }
 
 .map-container:hover {

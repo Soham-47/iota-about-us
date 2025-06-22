@@ -66,23 +66,74 @@
           </div>
         </div>
 
-        <div class="map-container">
-          <iframe
-            title="Jadavpur University Map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3683.4362872510785!2d88.36860497507938!3d22.498867279552353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02713b4630fb55%3A0x34db0a9e9912b0a2!2sJadavpur%20University!5e0!3m2!1sen!2sin!4v1718717412807!5m2!1sen!2sin"
-            width="100%"
-            height="200"
-            style="border:0;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
+        <div class="map-container" onclick="toggleMap()">
+          <div class="map-preview">
+            <div class="map-overlay">
+              <span>Tap to view map</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <polyline points="9 21 3 21 3 15"></polyline>
+                <line x1="21" y1="3" x2="14" y2="10"></line>
+                <line x1="3" y1="21" x2="10" y2="14"></line>
+              </svg>
+            </div>
+            <img src="https://maps.googleapis.com/maps/api/staticmap?center=22.4989,88.3718&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7C22.4989,88.3718&key=YOUR_API_KEY" alt="Jadavpur University Map" class="map-preview-img">
+          </div>
+          <div class="map-full">
+            <iframe
+              title="Jadavpur University Map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3683.4362872510785!2d88.36860497507938!3d22.498867279552353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02713b4630fb55%3A0x34db0a9e9912b0a2!2sJadavpur%20University!5e0!3m2!1sen!2sin!4v1718717412807!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            <button class="close-map" onclick="toggleMap(event)">×</button>
+          </div>
         </div>
         <p>&#9993; iotajuofficial@gmail.com</p>
       </div>
     </footer>
   </div>
+  </div>
   <script>
+    function toggleMap(event) {
+      // Prevent event bubbling to avoid toggling twice
+      if (event) {
+        event.stopPropagation();
+      }
+      
+      const mapContainer = document.querySelector('.map-container');
+      const body = document.body;
+      
+      // Toggle the expanded class
+      mapContainer.classList.toggle('expanded');
+      
+      // Toggle body overflow to prevent scrolling when map is expanded
+      if (mapContainer.classList.contains('expanded')) {
+        body.style.overflow = 'hidden';
+      } else {
+        body.style.overflow = '';
+      }
+    }
+    
+    // Close map when clicking outside the map content
+    document.addEventListener('click', function(event) {
+      const mapContainer = document.querySelector('.map-container.expanded');
+      const mapContent = document.querySelector('.map-container.expanded .map-full');
+      
+      if (mapContainer && !mapContainer.contains(event.target)) {
+        mapContainer.classList.remove('expanded');
+        document.body.style.overflow = '';
+      }
+    });
+    
+    // Prevent closing when clicking inside the map content
+    document.querySelector('.map-full').addEventListener('click', function(event) {
+      event.stopPropagation();
+    });
     
     window.addEventListener('scroll', function() {
       const header = document.querySelector('header');
